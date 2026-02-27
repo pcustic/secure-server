@@ -3,7 +3,7 @@
 Harden an Ubuntu server. 
 
 - 🔒 Disable root login and password authentication for SSH.
-- 🔒 Set up a non-root `app` user with sudo privileges.
+- 🔒 Set up a non-root `pcustic` user with sudo privileges.
 - 🔒 Install and configure UFW firewall.
 - 🔒 Install and configure fail2ban to protect against brute-force attacks.
 - 🔒 Set up SSH key authentication using your GitHub SSH keys.
@@ -25,11 +25,11 @@ export GITHUB_USERNAME=your_username
 #### 3/ Run the hardening script.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/shiroyasha/secure-server/main/harden.sh | bash -s -e
+curl -fsSL https://raw.githubusercontent.com/pcustic/secure-server/main/harden.sh | bash -s -e
 ```
 
-#### 4/ Use your new `app` user to SSH into your server.
+#### 4/ Use your new `pcustic` user to SSH into your server.
 
 ```bash
-ssh app@your-server-ip
+ssh pcustic@your-server-ip
 ```
