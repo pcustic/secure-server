@@ -6,8 +6,8 @@
 # Usage: GITHUB_USERNAME=your_username ./harden.sh
 #
 # Requires GITHUB_USERNAME environment variable. Fetches that GitHub user's SSH
-# public keys and adds them to the app user's authorized_keys. Afterwards,
-# you'll only be able to SSH into the server as 'app', e.g. app@1.2.3.4
+# public keys and adds them to the pcustic user's authorized_keys. Afterwards,
+# you'll only be able to SSH into the server as 'pcustic', e.g. pcustic@1.2.3.4
 #
 
 set -e
@@ -90,12 +90,12 @@ systemctl reload ssh
 # Step 6: Create Non-Root User with Sudo and Docker Access
 # ---------------------------------------------------------
 
-echo "Setup app user"
-adduser --disabled-password --gecos "" app
-echo "app ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "Setup pcustic user"
+adduser --disabled-password --gecos "" pcustic
+echo "pcustic ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-sudo -H -u app bash -c 'mkdir -p ~/.ssh'
-sudo -H -u app bash -c 'chmod 700 ~/.ssh'
+sudo -H -u pcustic bash -c 'mkdir -p ~/.ssh'
+sudo -H -u pcustic bash -c 'chmod 700 ~/.ssh'
 
 echo "Fetching SSH keys from GitHub for user: $GITHUB_USERNAME"
 KEYS_FILE=$(mktemp)
@@ -106,14 +106,14 @@ if [ ! -s "$KEYS_FILE" ]; then
     exit 1
 fi
 
-sudo -H -u app bash -c 'touch ~/.ssh/authorized_keys'
-sudo -H -u app bash -c 'chmod 600 ~/.ssh/authorized_keys'
-cp "$KEYS_FILE" /home/app/.ssh/authorized_keys
-chown app:app /home/app/.ssh/authorized_keys
-chmod 600 /home/app/.ssh/authorized_keys
+sudo -H -u pcustic bash -c 'touch ~/.ssh/authorized_keys'
+sudo -H -u pcustic bash -c 'chmod 600 ~/.ssh/authorized_keys'
+cp "$KEYS_FILE" /home/pcustic/.ssh/authorized_keys
+chown pcustic:pcustic /home/pcustic/.ssh/authorized_keys
+chmod 600 /home/pcustic/.ssh/authorized_keys
 
-# Add app user to Docker group
-usermod -aG docker app
+# Add pcustic user to Docker group
+usermod -aG docker pcustic
 
 # ---------------------------------------------------------
 # Step 7: Install and Configure fail2ban
